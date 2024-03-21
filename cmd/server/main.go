@@ -70,9 +70,9 @@ func main() {
 
 	// Define API routes
 	api := r.PathPrefix("/api/v1").Subrouter()
-	api.HandleFunc("/commands", commandHandler.CreateCommand).Methods("POST")
-	api.HandleFunc("/commands", commandHandler.GetCommands).Methods("GET")
-	api.HandleFunc("/commands/{id}", commandHandler.GetCommand).Methods("GET")
+	go api.HandleFunc("/commands", commandHandler.CreateCommand).Methods("POST")
+	go api.HandleFunc("/commands", commandHandler.GetCommands).Methods("GET")
+	go api.HandleFunc("/commands/{id}", commandHandler.GetCommand).Methods("GET")
 
 	// Start the HTTP server
 	port := os.Getenv("PORT")
