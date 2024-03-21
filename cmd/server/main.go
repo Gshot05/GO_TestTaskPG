@@ -2,7 +2,6 @@ package main
 
 import (
 	"database/sql"
-	"io/ioutil"
 	"log"
 	"myapp/internal/handler"
 	"myapp/internal/service"
@@ -17,7 +16,7 @@ import (
 )
 
 func runMigrations(db *sql.DB, migrationsPath string) error {
-	files, err := ioutil.ReadDir(migrationsPath)
+	files, err := os.ReadDir(migrationsPath)
 	if err != nil {
 		return err
 	}
@@ -25,7 +24,7 @@ func runMigrations(db *sql.DB, migrationsPath string) error {
 	for _, file := range files {
 		if strings.HasSuffix(file.Name(), ".sql") {
 			filePath := filepath.Join(migrationsPath, file.Name())
-			content, err := ioutil.ReadFile(filePath)
+			content, err := os.ReadFile(filePath)
 			if err != nil {
 				return err
 			}
