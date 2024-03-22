@@ -80,7 +80,7 @@ func getCommandByID(id int) {
 		return
 	}
 
-	fmt.Println("Ответ сервера:", buf.String())
+	fmt.Println("Ответ сервера:\n", buf.String())
 }
 
 func addCommand(content string) {
