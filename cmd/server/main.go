@@ -1,5 +1,6 @@
 package main
 
+//Все необходимые библиотеки, а также импортируем внутренние зависимости проекта
 import (
 	"database/sql"
 	"log"
@@ -15,6 +16,7 @@ import (
 	_ "github.com/lib/pq"
 )
 
+// Функция для запуска миграци(делается при запуске кода)
 func runMigrations(db *sql.DB, migrationsPath string) error {
 	files, err := os.ReadDir(migrationsPath)
 	if err != nil {
@@ -42,7 +44,7 @@ func runMigrations(db *sql.DB, migrationsPath string) error {
 }
 
 func main() {
-	// Load environment variables from .env file
+	// Загружаем зависимости из .env файла
 	err := godotenv.Load(".env")
 	if err != nil {
 		log.Fatal("Error loading .env file")
@@ -54,26 +56,26 @@ func main() {
 	}
 	defer db.Close()
 
-	// Set up migrations
+	// Установили миграции
 	migrationsPath := "./migrations/"
 	if err := runMigrations(db, migrationsPath); err != nil {
 		log.Fatalf("Error applying migrations: %v", err)
 	}
 
-	// Create instances of the service and handler
+	// Создили зависимости для сервиса и ручек
 	commandService := service.NewCommandService(db)
 	commandHandler := handler.NewCommandHandler(commandService)
 
-	// Set up the HTTP server with Gorilla Mux router
+	// Задали роуты с помощью Gorilla Mux
 	r := mux.NewRouter()
 
-	// Define API routes
+	// Определеяем наши роуты
 	api := r.PathPrefix("/api/v1").Subrouter()
 	go api.HandleFunc("/commands", commandHandler.CreateCommand).Methods("POST")
 	go api.HandleFunc("/commands", commandHandler.GetCommands).Methods("GET")
 	go api.HandleFunc("/commands/{id}", commandHandler.GetCommand).Methods("GET")
 
-	// Start the HTTP server
+	// Запускаем сервер
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "8080"

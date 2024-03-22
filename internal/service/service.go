@@ -1,34 +1,35 @@
 package service
 
+//Единственный нужный импорт здесь :)
 import "database/sql"
 
-// Command represents a command entity.
+// Command представляет собой структуру таблицы commands в базе данных
 type Command struct {
 	ID      int    `json:"id"`
 	Content string `json:"content"`
 }
 
-// CommandService provides methods for managing commands.
+// CommandService предоставляет собой методы для управления командами
 type CommandService struct {
 	DB *sql.DB
 }
 
-// NewCommandService creates a new CommandService with the given database connection.
+// NewCommandService создает новый CommandService с подключением к базе данных
 func NewCommandService(db *sql.DB) *CommandService {
 	return &CommandService{DB: db}
 }
 
-// CreateCommand creates a new command in the database.
+// CreateCommand создаёт новую команду в базе данных
 func (s *CommandService) CreateCommand(command *Command) error {
 
 	_, err := s.DB.Exec("INSERT INTO commands (content) VALUES ($1)", command.Content)
 	return err
 }
 
-// GetCommands returns a list of all commands from the database.
+// GetCommands возвращзает список всех команд в бд
 func (s *CommandService) GetCommands() ([]Command, error) {
 
-	rows, err := s.DB.Query("SELECT id, content FROM commands")
+	rows, err := s.DB.Query("SELECT * FROM commands")
 	if err != nil {
 		return nil, err
 	}

@@ -1,5 +1,6 @@
 package handler
 
+//Все необходимые библиотеки, а также импортируем внутренние зависимости проекта
 import (
 	"database/sql"
 	"encoding/json"
@@ -11,17 +12,17 @@ import (
 	"github.com/gorilla/mux"
 )
 
-// CommandHandler represents the HTTP handler for commands.
+// CommandHandler представляет обработчик HTTP для команд
 type CommandHandler struct {
 	CommandService *service.CommandService
 }
 
-// NewCommandHandler creates a new CommandHandler with the given service.
+// NewCommandHandler создает новый CommandHandler с данным сервисом
 func NewCommandHandler(commandService *service.CommandService) *CommandHandler {
 	return &CommandHandler{CommandService: commandService}
 }
 
-// CreateCommand creates a new command.
+// CreateCommand создаёт новую команду
 func (h *CommandHandler) CreateCommand(w http.ResponseWriter, r *http.Request) {
 	var command service.Command
 	if err := json.NewDecoder(r.Body).Decode(&command); err != nil {
@@ -39,7 +40,7 @@ func (h *CommandHandler) CreateCommand(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(command)
 }
 
-// GetCommands returns the list of all commands.
+// GetCommands возвращает список всех команд в бд
 func (h *CommandHandler) GetCommands(w http.ResponseWriter, r *http.Request) {
 	commands, err := h.CommandService.GetCommands()
 	if err != nil {
@@ -50,7 +51,7 @@ func (h *CommandHandler) GetCommands(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(commands)
 }
 
-// GetCommand returns a specific command by ID.
+// GetCommand возвращает определенную команду по ID
 func (h *CommandHandler) GetCommand(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id, err := strconv.Atoi(vars["id"])
