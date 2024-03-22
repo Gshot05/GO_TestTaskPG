@@ -48,7 +48,7 @@ func (s *CommandService) GetCommands() ([]Command, error) {
 	return commands, nil
 }
 
-// GetCommand returns a specific command by ID from the database.
+// GetCommand возвращает определенную команду по ID
 func (s *CommandService) GetCommand(id int) (*Command, error) {
 	var command Command
 	err := s.DB.QueryRow("SELECT id, content FROM commands WHERE id = $1", id).Scan(&command.ID, &command.Content)
