@@ -43,7 +43,7 @@ func runMigrations(db *sql.DB, migrationsPath string) error {
 
 func main() {
 	// Load environment variables from .env file
-	err := godotenv.Load("../../.env")
+	err := godotenv.Load(".env")
 	if err != nil {
 		log.Fatal("Error loading .env file")
 	}
@@ -55,7 +55,7 @@ func main() {
 	defer db.Close()
 
 	// Set up migrations
-	migrationsPath := "../../migrations/"
+	migrationsPath := "./migrations/"
 	if err := runMigrations(db, migrationsPath); err != nil {
 		log.Fatalf("Error applying migrations: %v", err)
 	}
