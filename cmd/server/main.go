@@ -36,7 +36,7 @@ func runMigrations(db *sql.DB, migrationsPath string) error {
 				return err
 			}
 
-			log.Printf("Applied migration: %s", file.Name())
+			log.Printf("Миграции выполнены по файлу: %s", file.Name())
 		}
 	}
 
@@ -59,7 +59,7 @@ func main() {
 	// Установили миграции
 	migrationsPath := "./migrations/"
 	if err := runMigrations(db, migrationsPath); err != nil {
-		log.Fatalf("Error applying migrations: %v", err)
+		log.Fatalf("Ошибка миграции: %v", err)
 	}
 
 	// Создили зависимости для сервиса и ручек
