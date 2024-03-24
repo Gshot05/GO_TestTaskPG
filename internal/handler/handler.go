@@ -30,6 +30,7 @@ func (h *CommandHandler) CreateCommand(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Обращаемся к команде из сервиса
 	err := h.CommandService.CreateCommand(&command)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -67,6 +68,7 @@ func (h *CommandHandler) GetCommand(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Обращаемся к команде из сервиса
 	command, err := h.CommandService.GetCommand(id)
 	if err != nil {
 		if err == sql.ErrNoRows {
