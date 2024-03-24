@@ -48,6 +48,13 @@ func (h *CommandHandler) GetCommands(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Если список команд пуст (возвращается ошибка с сообщением о пустом списке), возвращаем ошибку
+	if commands == nil {
+		http.Error(w, "В базе данных пока нет команд", http.StatusNotFound)
+		return
+	}
+
+	// Если список команд не пуст, возвращаем их в виде JSON
 	json.NewEncoder(w).Encode(commands)
 }
 
