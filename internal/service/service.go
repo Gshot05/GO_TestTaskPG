@@ -1,7 +1,10 @@
 package service
 
 //Единственный нужный импорт здесь :)
-import "database/sql"
+import (
+	"database/sql"
+	"fmt"
+)
 
 // Command представляет собой структуру таблицы commands в базе данных
 type Command struct {
@@ -26,12 +29,11 @@ func (s *CommandService) CreateCommand(command *Command) error {
 	return err
 }
 
-// GetCommands возвращзает список всех команд в бд
-func (s *CommandService) GetCommands() ([]Command, error) {
-
+// GetCommands возвращает список всех команд или сообщение, если список пуст
+func (s *CommandService) GetCommands() (string, error) {
 	rows, err := s.DB.Query("SELECT * FROM commands")
 	if err != nil {
-		return nil, err
+		return "", err
 	}
 	defer rows.Close()
 
@@ -40,12 +42,18 @@ func (s *CommandService) GetCommands() ([]Command, error) {
 		var c Command
 		err := rows.Scan(&c.ID, &c.Content)
 		if err != nil {
-			return nil, err
+			return "", err
 		}
 		commands = append(commands, c)
 	}
 
-	return commands, nil
+	// Если список команд пуст, возвращаем специальное сообщение
+	if len(commands) == 0 {
+		return "В базе данных пока нет команд", nil
+	}
+
+	// Если список команд не пуст, возвращаем их в виде строки
+	return fmt.Sprintf("%+v", commands), nil
 }
 
 // GetCommand возвращает определенную команду по ID

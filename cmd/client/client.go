@@ -1,36 +1,33 @@
 package main
 
-//Все необходимые библиотеки
 import (
 	"bytes"
 	"encoding/json"
 	"fmt"
 	"net/http"
 	"os"
+	"sync"
 )
 
-// Создаём структуру Command которая повторяет таблицу commands в базе данных
 type Command struct {
 	ID      int    `json:"id"`
 	Content string `json:"content"`
 }
 
 func main() {
-	// Далее это опции для нашего клиента
+	fmt.Println("Добро пожаловать в терминал! Выберете команду:")
+
 	for {
-		//Варианты событий
-		fmt.Println("Добро пожаловать в терминал! Выберете команду:")
 		fmt.Println("1. Получить все команды")
 		fmt.Println("2. Получить команду по ID")
-		fmt.Println("3. Добавить команду")
+		fmt.Println("3. Добавить одну команду")
+		fmt.Println("4. Добавить несколько команд")
 		fmt.Println("Для выхода введите 'exit'")
 
-		// Тут мы выводим > и ждём какой будет выбор
 		var choice string
 		fmt.Print("> ")
 		fmt.Scanln(&choice)
 
-		// Switch-case для наших выборов
 		switch choice {
 		case "1":
 			getAllCommands()
@@ -44,6 +41,11 @@ func main() {
 			fmt.Print("Введите содержание команды: ")
 			fmt.Scanln(&content)
 			addCommand(content)
+		case "4":
+			var n int
+			fmt.Print("Сколько команд вы хотите добавить? ")
+			fmt.Scanln(&n)
+			addMultipleCommands(n)
 		case "exit":
 			fmt.Println("Программа завершена.")
 			os.Exit(0)
@@ -108,4 +110,27 @@ func addCommand(content string) {
 	defer resp.Body.Close()
 
 	fmt.Println("Команда успешно добавлена!")
+}
+
+func addMultipleCommands(n int) {
+	var wg sync.WaitGroup
+	var commands []string
+
+	fmt.Print("Введите содержание команды: ")
+	for i := 0; i < n; i++ {
+		var content string
+		fmt.Scanln(&content)
+		commands = append(commands, content)
+	}
+
+	for _, content := range commands {
+		wg.Add(1)
+		go func(content string) {
+			defer wg.Done()
+			addCommand(content)
+		}(content)
+	}
+
+	wg.Wait()
+	fmt.Printf("Все %d команд успешно добавлены!\n", n)
 }
