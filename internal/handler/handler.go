@@ -64,7 +64,7 @@ func (h *CommandHandler) GetCommand(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id, err := strconv.Atoi(vars["id"])
 	if err != nil {
-		http.Error(w, "Invalid command ID", http.StatusBadRequest)
+		http.Error(w, "некорректный ID", http.StatusBadRequest)
 		return
 	}
 
@@ -72,7 +72,7 @@ func (h *CommandHandler) GetCommand(w http.ResponseWriter, r *http.Request) {
 	command, err := h.CommandService.GetCommand(id)
 	if err != nil {
 		if err == sql.ErrNoRows {
-			http.Error(w, "Command not found", http.StatusNotFound)
+			http.Error(w, "Команда не найдена", http.StatusNotFound)
 			return
 		}
 		http.Error(w, err.Error(), http.StatusInternalServerError)

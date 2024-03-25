@@ -24,6 +24,7 @@ func NewCommandService(db *sql.DB) *CommandService {
 // CreateCommand создаёт новую команду в базе данных
 func (s *CommandService) CreateCommand(command *Command) error {
 
+	// SQL запрос на выборку данных
 	_, err := s.DB.Exec("INSERT INTO commands (content) VALUES ($1)", command.Content)
 	return err
 }
@@ -31,6 +32,7 @@ func (s *CommandService) CreateCommand(command *Command) error {
 // GetCommands возвращает список всех команд или сообщение, если список пуст
 func (s *CommandService) GetCommands() ([]Command, error) {
 
+	// SQL запрос на выборку данных
 	rows, err := s.DB.Query("SELECT * FROM commands")
 	if err != nil {
 		return nil, err
@@ -53,6 +55,7 @@ func (s *CommandService) GetCommands() ([]Command, error) {
 // GetCommand возвращает определенную команду по ID
 func (s *CommandService) GetCommand(id int) (*Command, error) {
 	var command Command
+	// SQL запрос на выборку данных
 	err := s.DB.QueryRow("SELECT id, content FROM commands WHERE id = $1", id).Scan(&command.ID, &command.Content)
 	if err != nil {
 		return nil, err

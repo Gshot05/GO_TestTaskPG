@@ -1,5 +1,6 @@
 package main
 
+// Все необходимые импорты
 import (
 	"bytes"
 	"encoding/json"
@@ -9,6 +10,7 @@ import (
 	"sync"
 )
 
+// Объявляем нашу структуру Command
 type Command struct {
 	ID      int    `json:"id"`
 	Content string `json:"content"`
@@ -112,6 +114,7 @@ func addCommand(content string) {
 	fmt.Println("Команда успешно добавлена!")
 }
 
+// Отправляет несколько команд сразу асинхронно
 func addMultipleCommands(n int) {
 	var wg sync.WaitGroup
 	var commands []string

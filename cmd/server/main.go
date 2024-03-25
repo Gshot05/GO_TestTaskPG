@@ -50,6 +50,7 @@ func main() {
 		log.Fatal("Error loading .env file")
 	}
 
+	// Подключение к базе данных
 	db, err := sql.Open("postgres", os.Getenv("DATABASE_URL"))
 	if err != nil {
 		log.Fatal(err)
