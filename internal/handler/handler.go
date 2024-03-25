@@ -7,6 +7,8 @@ import (
 	"net/http"
 	"strconv"
 
+	_ "github.com/lib/pq"
+
 	"myapp/internal/service"
 
 	"github.com/gorilla/mux"

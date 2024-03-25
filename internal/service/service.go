@@ -1,8 +1,9 @@
 package service
 
-//Единственный нужный импорт здесь :)
 import (
 	"database/sql"
+
+	_ "github.com/lib/pq"
 )
 
 // Command представляет собой структуру таблицы commands в базе данных
