@@ -71,7 +71,7 @@ func main() {
 	r := mux.NewRouter()
 
 	// Определеяем наши роуты
-	api := r.PathPrefix("/api/v1").Subrouter()
+	api := r.PathPrefix("/api").Subrouter()
 	go api.HandleFunc("/commands", commandHandler.CreateCommand).Methods("POST")
 	go api.HandleFunc("/commands", commandHandler.GetCommands).Methods("GET")
 	go api.HandleFunc("/commands/{id}", commandHandler.GetCommand).Methods("GET")
